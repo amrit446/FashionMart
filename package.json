@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/amrit446/FashionMart#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
     "colors": "^1.4.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
