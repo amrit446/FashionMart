@@ -1,110 +1,84 @@
-import  JWT from "jsonwebtoken";
+import JWT from "jsonwebtoken";
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 
-export const registerController = async(req, res)=>{
-    try{
-        const {name, email, password, phone, address} = req.body
+export const registerController = async (req, res) => {
+    try {
+        const { name, email, password, phone, address } = req.body;
 
-        //validate
-        if(!name){
-            return res.send({error:"Name is Required"})
-        }
-        if(!email){
-            return res.send({error:"Email is Required"})
-        }
-        if(!password){
-            return res.send({error:"Password is Required"})
-        }
-        if(!phone){
-            return res.send({error:"Phone is Required"})
-        }
-        if(!address){
-            return res.send({error:"Address is Required"})
+        // Validate
+        if (!name || !email || !password || !phone || !address) {
+            return res.status(400).send({ error: "All fields are required" });
         }
 
-        const existingUser = await userModel.findOne({email})
-
-        if(existingUser){
-            return res.status(200).send({
-                success:true,
-                message:"Already Register Please login"
-            })
+        // Check if user already exists
+        const existingUser = await userModel.findOne({ email });
+        if (existingUser) {
+            return res.status(409).send({ error: "Email is already registered" });
         }
- 
+
+        // Hash the password
         const hashedPassword = await hashPassword(password);
 
-        const user = await new userModel({
+        // Create new user
+        const newUser = await userModel.create({
             name,
             email,
+            password: hashedPassword,
             phone,
-            address,
-            password:hashedPassword
-        }).save();
+            address
+        });
 
         res.status(201).send({
-            success:true,
-            message:"User Register Successfully",
-            user
-        })
-        console.log("register is working")
-
-    }catch(error){
+            success: true,
+            message: "User registered successfully",
+            user: newUser
+        });
+    } catch (error) {
         console.log(error);
         res.status(500).send({
-            success:false,
-            message:"Error in Registration",
+            success: false,
+            message: "Error in registration",
             error
-        })  
+        });
     }
-}
+};
 
+export const loginController = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-export const loginController = async(req, res)=>{
-    try{
-        const {email, password} = req.body;
-        if(!email || !password){
-            return res.status(404).send({
-                success:false,
-                message:'Invalid email or password'
-            })
-        }
-        const user = await userModel.findOne({email})
-        if(!user){
-            return res.status(404).send({
-                success:false,
-                message:"Email is not registerd"
-            })
-        }
-        const match = await comparePassword(password, user.password)
-
-        if(!match){
-            return res.status(200).send({
-                success:false,
-                message:"Invalid Password"
-            })
+        // Validate
+        if (!email || !password) {
+            return res.status(400).send({ error: "Email and password are required" });
         }
 
-        const token = await JWT.sign({_id:user._id}, process.env.JWT_SECRET,{expiresIn:"7d"});
+        // Find user by email
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(404).send({ error: "Email is not registered" });
+        }
+
+        // Compare passwords
+        const match = await comparePassword(password, user.password);
+        if (!match) {
+            return res.status(401).send({ error: "Invalid password" });
+        }
+
+        // Generate JWT token
+        const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
         res.status(200).send({
-            success:true,
-            message:"login successfully",
-            user:{
-                name: user.name,
-                email: user.email,
-                phone: user.phone,
-                address: user.address,  
-            },
+            success: true,
+            message: "Login successful",
             token
-        })
-    }
-    catch(error){
-        console.log(error)
+        });
+    } catch (error) {
+        console.log(error);
         res.status(500).send({
-            success:false,
-            message:"Error in login",
+            success: false,
+            message: "Error in login",
             error
-        })
+        });
     }
 };
