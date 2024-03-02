@@ -66,13 +66,20 @@ export const loginController = async (req, res) => {
         }
 
         // Generate JWT token
-        const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-
-        res.status(200).send({
-            success: true,
-            message: "Login successful",
-            token
-        });
+        const token = await JWT.sign({_id:user._id},
+            process.env.JWT_SECRET,{expiresIn:'7d'}
+                )
+            res.status(200).send({
+             success:true,
+             message:'login successfully',
+             user:{
+                name:user.name,
+                email:user.email,
+                phone:user.phone,
+                address:user.address
+             },
+             token
+            })    
     } catch (error) {
         console.log(error);
         res.status(500).send({
@@ -82,3 +89,10 @@ export const loginController = async (req, res) => {
         });
     }
 };
+
+
+
+// test controller
+export const testController=(req, res)=>{
+    console.log('protected')
+}
