@@ -5,7 +5,7 @@ import { connect } from "mongoose";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import bodyParser from 'body-parser';
-//////
+import cors from "cors";
 
 const app= express()
 //
@@ -16,6 +16,8 @@ connectDB();
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
+
+app.use(cors())
 
 app.use(express.json());
 

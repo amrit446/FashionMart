@@ -3,7 +3,7 @@ import Layout from "./../components/Layout/Layout";
 
 const Policy = () => {
   return (
-    <Layout>
+    <Layout title={"this is policy"}>
       <div className="row contactus ">
         <div className="col-md-6 ">
           <img
@@ -27,3 +27,6 @@ const Policy = () => {
 };
 
 export default Policy;
+
+
+

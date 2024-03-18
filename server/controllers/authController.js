@@ -14,7 +14,9 @@ export const registerController = async (req, res) => {
         // Check if user already exists
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
-            return res.status(409).send({ error: "Email is already registered" });
+            return res.status(409).send({
+                success:false,
+                 message: "Email is already registered Plese login" });
         }
 
         // Hash the password
@@ -50,19 +52,19 @@ export const loginController = async (req, res) => {
 
         // Validate
         if (!email || !password) {
-            return res.status(400).send({ error: "Email and password are required" });
+            return res.status(400).send({ message: "Email and password are required" });
         }
 
         // Find user by email
         const user = await userModel.findOne({ email });
         if (!user) {
-            return res.status(404).send({ error: "Email is not registered" });
+            return res.status(404).send({ message: "Email is not registered" });
         }
 
         // Compare passwords
         const match = await comparePassword(password, user.password);
         if (!match) {
-            return res.status(401).send({ error: "Invalid password" });
+            return res.status(401).send({ message: "Invalid password" });
         }
 
         // Generate JWT token
