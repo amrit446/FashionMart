@@ -11,6 +11,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [answer, setAnswer] = useState("");
   const navigate = useNavigate();
 
 
@@ -19,7 +20,7 @@ const handleSubmit=async(e)=>{
   e.preventDefault();
   try{
      const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/register`,{name,
-    email, password, phone, address
+    email, password, phone, address, answer
     })
     if(res && res.data.success){
      alert("user registed successfully");
@@ -28,7 +29,7 @@ const handleSubmit=async(e)=>{
       alert(res.data.message)
     }
   }
-  catch(error){};
+  catch(error){console.log(error)};
   console.log(name, email, password, address, phone);
   console.log(process.env.REACT_APP_API);
 }
@@ -44,7 +45,7 @@ const handleSubmit=async(e)=>{
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="form-control"
-            id="exampleInputEmail1"
+            id="exampleInputName1"
             placeholder="Enter Your Name"
             required
             autoFocus
@@ -78,7 +79,7 @@ const handleSubmit=async(e)=>{
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="form-control"
-            id="exampleInputEmail1"
+            id="exampleInputPhone1"
             placeholder="Enter Your Phone"
             required
           />
@@ -89,8 +90,19 @@ const handleSubmit=async(e)=>{
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="form-control"
-            id="exampleInputEmail1"
+            id="exampleInputAddress1"
             placeholder="Enter Your Address"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            type="text"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            className="form-control"
+            id="exampleInputSetAnswer"
+            placeholder="Enter Your School Name"
             required
           />
         </div>
