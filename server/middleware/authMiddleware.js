@@ -31,13 +31,14 @@ export const isAdmin = async(req, res, next)=>{
        }
        else{
         next()
+        console.log("this is admin")
        }
     }
    catch(err){
     console.log(err);
     res.status(401).send({
         success:false,
-        error,
+        err,
         message:' Error in admin middleware'
     })
    }
