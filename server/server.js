@@ -4,6 +4,7 @@ import morgan from "morgan";
 import { connect } from "mongoose";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
+import categoryRoutes from './routes/categoryRoutes.js'
 import bodyParser from 'body-parser';
 import cors from "cors";
 
@@ -21,8 +22,9 @@ app.use(cors())
 
 app.use(express.json());
 
+//routes
 app.use("/api/v1/auth", authRoutes);
-
+app.use("/api/v1/category", categoryRoutes)
 app.use(morgan("dev"));
 
 app.get("/",(req,res)=>{
