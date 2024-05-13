@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/amrit446/FashionMart#readme",
   "dependencies": {
+    "antd": "^5.17.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "colors": "^1.4.0",

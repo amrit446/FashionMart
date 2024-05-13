@@ -22,26 +22,27 @@ function App() {
     <Routes>
       <Route path='/' element={<HomePage/>}/>
       <Route path='/register' element={<Register/>}/>
+
       <Route path="/dashboard" element={<PrivateRoute/>}>
       <Route path='user' element={<Dashboard/>}/>
       <Route path='user/orders' element={<Orders/>}/>
       <Route path='user/profile' element={<Profile/>}/>
       </Route>
+      
       <Route path="/dashboard" element={<AdminRoute/>}>
       <Route path='admin' element={<AdminDashboard/>}/>
       <Route path='admin/create-category' element={<CreateCategory/>}/>
       <Route path='admin/create-product' element={<CreateProduct/>}/>
       <Route path='admin/create-users' element={<Users/>}/>
-
       </Route>
+     
       <Route path='/login' element={<Login/>}/>
       <Route path='/forgot-password' element={<ForgotPassword/>}/>
       <Route path='/about' element={<About/>}/>
       <Route path='/contact' element={<Contact/>}/>
       <Route path='/policy' element={<Policy/>}/>
       <Route path='*' element={<Pagenotfound/>}/>
-
-    </Routes>
+      </Routes>
   );
 }
 
