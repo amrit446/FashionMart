@@ -4,7 +4,7 @@ function Footer() {
   return (
     <div className='footer'>
        <h1 className='text-center'>
-        All Right Reserved &copy; Ecom
+        All Right Reserved &copy; FashionMart
         </h1>
       <p className='text-center mt-3'>
         <Link to="/about">
