@@ -19,10 +19,13 @@
   box-shadow: 0 8px 6px -6px gray;
   --webkit-box-shadow: 0 8px 6px -6px gray;
   border-bottom: 0.3px solid gray !important;
+  background: linear-gradient(to right, #434343, #000000);
+  
 }
 
 .nav-link {
   font-weight: 300 !important;
+  color: #ffff !important;
 }
 
 .active{
@@ -33,6 +36,8 @@
   font-weight: 700;
   font-family: "roboto", sans-serif;
   letter-spacing: 3px;
+    color: #ffff !important;
+
 }
 
 
@@ -40,11 +45,7 @@
   color: white;
   padding: 25px;
   background: #000000; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #434343,
-    #000000
-  ); /* Chrome 10-25, Safari 5.1-6 */
+; /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #434343, #000000);
 }
 
