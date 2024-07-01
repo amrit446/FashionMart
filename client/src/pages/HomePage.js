@@ -4,6 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Checkbox, Radio } from 'antd';
 import { Prices } from '../components/Prices';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -17,7 +18,7 @@ function HomePage() {
   const records = products.slice(firstIndex, lastIndex);
   const npage = Math.ceil(products.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
-
+  const navigate = useNavigate();
   // get All Categories
   const getAllCategory = async () => {
     try {
@@ -136,7 +137,7 @@ function HomePage() {
                     <h5 className="card-title">{p.name}</h5>
                     <p className="card-text">{p.description.substring(0, 30)}</p>
                     <p className="card-text">${p.price}</p>
-                    <button className="btn btn-primary ms-1">More Details</button>
+                    <button className="btn btn-primary ms-1" onClick={()=>navigate(`/product/${p.slug}`)}>More Details</button>
                     <button className="btn btn-secondary ms-1">ADD To CART</button>
                   </div>
                 </div>
