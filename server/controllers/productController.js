@@ -2,6 +2,8 @@ import productModel from '../models/productModel.js'
 import slugify from 'slugify';
 import fs from 'fs';
 import { message } from 'antd';
+import mongoose from 'mongoose'; 
+
 
 export const createProductController=async(req,res)=>{
 try{
@@ -105,26 +107,38 @@ export const getSingleProductController=async(req, res)=>{
 
 
 // get photo
-export const productPhotoController=async(req,res)=>{
-  try{
-    const product = await productModel.findById(
-        req.params.pid
-    ).select("photo")
-    if(product.photo.data){
-        res.set('Content-type', product.photo.contentType);
-        return res.status(200).send(product.photo.data)
+export const productPhotoController = async (req, res) => {
+  try {
+    const { pid } = req.params;
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(pid)) {
+      return res.status(400).send({
+        success: false,
+        message: 'Invalid product ID format',
+      });
     }
 
-  }
-  catch(error){
-    console.log(error);
+    const product = await productModel.findById(pid).select("photo");
+    if (product && product.photo && product.photo.data) {
+      res.set('Content-Type', product.photo.contentType);
+      return res.status(200).send(product.photo.data);
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: 'Photo not found',
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
     res.status(500).send({
-        success:false,
-        message:'Error while getting photo',
-        error
-    })
+      success: false,
+      message: 'Error while getting photo',
+      error,
+    });
   }
-}
+};
 
 //delete product controller
 export const deleteProductController=async(req, res)=>{
@@ -237,6 +251,29 @@ export const searchProductController= async(req, res)=>{
     res.status(400).send({
       success:false,
       message:"Error In Search Product API",
+      error
+    })
+  }
+}
+
+
+// similiar products
+export const relatedProductController = async(req, res)=>{
+  try{
+    const {pid, cid} = req.params;
+    const products = await productModel.find({
+      category:cid,
+      _id:{$ne:pid}
+    }).select("-photo").limit(3).populate("category")
+    res.status(200).send({
+      success:true,
+      products,
+    })   
+  }
+  catch(error){
+    res.status(400).send({
+      success:false,
+      message:"error by getting related product",
       error
     })
   }

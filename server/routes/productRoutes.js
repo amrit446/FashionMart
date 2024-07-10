@@ -3,6 +3,7 @@ import {isAdmin, requireSignIn} from '../middleware/authMiddleware.js';
 import { createProductController, deleteProductController, 
   getProductController, getSingleProductController, 
   productFilterController, productPhotoController, 
+  relatedProductController, 
   searchProductController, 
   updateProductController } from '../controllers/productController.js';
 import formidable from 'express-formidable';
@@ -45,4 +46,7 @@ router.put(
 // search product
 router.get("/search/:keyword", searchProductController);
 
+
+//similar product
+router.get("/related-product/:pid/:cid", relatedProductController)
 export default router; 

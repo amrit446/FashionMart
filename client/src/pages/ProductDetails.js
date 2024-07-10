@@ -6,9 +6,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 const ProductDetails = () => {
   const params = useParams();
   const [product, setProduct] = useState({});
-  const [relatedProducts, setRelatedProducts] = useState([]);
   const navigate = useNavigate();
- 
+  const [relatedProducts, setRelatedProducts] = useState([])
+
   //intial details
   useEffect(()=>{
     if(params?.slug)getProduct();
@@ -17,7 +17,10 @@ const ProductDetails = () => {
   const getProduct = async()=>{
    try{
     const {data} = await axios.get(`${ process.env.REACT_APP_API}/api/v1/product/get-product/${params.slug}`)
-    setProduct(data?.product)
+    setProduct(data?.product);
+    getSimilarProducts(data?.product._id,
+      data?.product.category._id
+    );
     console.log("this is ", data.product)
    }
    catch(error){
@@ -25,6 +28,18 @@ const ProductDetails = () => {
    }
   }
 
+  //get similiar product
+
+  const getSimilarProducts = async(pid, cid)=>{
+   try{
+    const {data} = await axios.get(`${ process.env.REACT_APP_API}/api/v1/product/related-product/${pid}/${cid}`)
+     setRelatedProducts(data?.products)
+  }
+   catch(error){
+    console.log(error)
+   }
+  }
+  
   return (
     <Layout>
       <div className="row container mt-2">
@@ -56,7 +71,7 @@ const ProductDetails = () => {
           {relatedProducts?.map((p) => (
             <div className="card m-2" style={{ width: "18rem" }}>
               <img
-                src={`/api/v1/product/product-photo/${p?._id}`}
+                src={`${ process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
                 className="card-img-top"
                 alt={p.name}
               />
@@ -73,10 +88,11 @@ const ProductDetails = () => {
                 <button class="btn btn-secondary ms-1">ADD TO CART</button>
               </div>
             </div>
+            
           ))}
         </div>
       </div>
-    </Layout>
+      </Layout>
   )
 }
 
