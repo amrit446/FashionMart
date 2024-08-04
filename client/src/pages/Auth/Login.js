@@ -40,7 +40,7 @@ function Login() {
 
   return (
     <Layout title="Register - Ecommer App">
-      <div className="form-container ">
+      <div className="form-container mt-3">
         <form onSubmit={handleSubmit}>
           <h4 className="title">LOGIN FORM</h4>
 
