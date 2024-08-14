@@ -140,7 +140,9 @@ function HomePage() {
                     <p className="card-text">${p.price}</p>
                     <button className="btn btn-primary ms-1" onClick={()=>navigate(`/product/${p.slug}`)}>More Details</button>
                     <button className="btn btn-secondary ms-1"
-                    onClick={()=>{setCart([...cart,p])}}
+                    onClick={()=>{setCart([...cart,p]);
+                      localStorage.setItem('cart', JSON.stringify([...cart, p]))
+                    }}
                     >ADD To CART</button>
                   </div>
                 </div>
