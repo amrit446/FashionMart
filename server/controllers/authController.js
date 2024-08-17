@@ -144,10 +144,6 @@ export const forgotPasswordController=async(req, res)=>{
 }
 
 
-// test controller
-export const testController=(req, res)=>{
-    console.log('protected')
-}
 
 //update profile
 export const updateProfileController=async(req, res)=>{

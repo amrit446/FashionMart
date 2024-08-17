@@ -122,7 +122,8 @@ const handleSubmit=async(e)=>{
           UPDATE 
         </button>
       </form>
-    </div>              </div>
+    </div>
+    </div>
            </div>
         </div>
     </Layout>
