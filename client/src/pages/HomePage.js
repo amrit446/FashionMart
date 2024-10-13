@@ -53,7 +53,6 @@ function HomePage() {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/get-product`);
       setProducts(data.products);
-      console.log("this is ", products.length);
     } catch (error) {
       console.log(error);
       toast.error("Something Went Wrong");
