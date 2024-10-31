@@ -4,7 +4,10 @@ import { registerController,
 loginController, 
 forgotPasswordController,
 updateProfileController, 
-getOrdersController } from "../controllers/authController.js"
+getOrdersController,
+getAllOrdersController,
+orderStatusController
+} from "../controllers/authController.js"
 
 // router object
 const router = express.Router();
@@ -34,5 +37,18 @@ router.put("/profile", requireSignIn, updateProfileController)
 
 //orders
 router.get("/orders", requireSignIn, getOrdersController);
+
+//orders
+router.get("/all-orders", requireSignIn, isAdmin, getAllOrdersController);
+
+// order status update
+router.put(
+    "/order-status/:orderId",
+    requireSignIn,
+    isAdmin,
+    orderStatusController
+  );
+
+
 
 export default router;
