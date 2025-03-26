@@ -1,0 +1,57 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual Environment
+venv/
+env/
+
+# Django secret files
+*.sqlite3
+db.sqlite3
+*.env
+!example.env  # Keep an example file
+
+# Ignore compiled files
+*.pyc
+*.pyo
+*.pyd
+
+# Logs & Debug Files
+logs/
+*.log
+*.out
+*.err
+debug.log
+
+# Django Migrations (ignore all except __init__.py)
+*/migrations/*
+!*/migrations/__init__.py
+
+# VS Code & IDE files
+.vscode/
+.idea/
+*.swp
+
+# Ignore static & media files (optional)
+staticfiles/
+media/
+
+# PostgreSQL-related files
+*.sql
+*.dump
+data.json
+pgdata/  # If using local PostgreSQL storage
+
+# Ignore node_modules if using frontend with Django
+node_modules/
+
+# Ignore dependencies (only if using pipenv)
+Pipfile
+Pipfile.lock
+
+# Ignore Docker-related files (if using Docker)
+docker-compose.yml
+.dockerignore
+__docker_cache__/
