@@ -1,46 +1,40 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import { connect } from "mongoose";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
-import categoryRoutes from './routes/categoryRoutes.js'
-import productRoutes from './routes/productRoutes.js'
+import categoryRoutes from './routes/categoryRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 import bodyParser from 'body-parser';
 import cors from "cors";
-import path from "path";
 
-const app= express();
-const _dirname = path.dirname("");
-const buildpath = path.join(_dirname, "../client/build");
+dotenv.config();
 
-dotenv.config()
-
+// Connect to DB
 connectDB();
 
-app.use(bodyParser.urlencoded({ extended: false }))
+// Initialize app
+const app = express();
 
-app.use(bodyParser.json())
-
-app.use(cors())
-
+// Middleware
+app.use(morgan("dev"));
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.json());
 
-app.use(express.static(buildpath));
-
-//routes
+// API Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
-app.use("/api/v1/product", productRoutes)
-app.use(morgan("dev"));
+app.use("/api/v1/product", productRoutes);
 
-app.get("/",(req,res)=>{
-    res.send("<h1>Welcome to ecommerce app</h1>")
+// Root route
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome to ecommerce app</h1>");
 });
 
+// Start server
 const PORT = process.env.PORT || 8080;
-
-
-app.listen(PORT, ()=>{
-    console.log(`Server Runnung on ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server Running on port ${PORT}`);
 });
