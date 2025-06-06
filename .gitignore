@@ -1,57 +1,106 @@
-# Ignore Python bytecode
+# =========================
+# 🐍 Python / Django
+# =========================
+
+# Python bytecode and compiled files
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
 *.so
 
-# Virtual Environment
+# Virtual environments
 venv/
 env/
 
-# Django secret files
+# Django environment and secrets
+*.env
+.env.*
+!example.env
+
+# SQLite database
 *.sqlite3
 db.sqlite3
-*.env
-!example.env  # Keep an example file
 
-# Ignore compiled files
-*.pyc
-*.pyo
-*.pyd
-
-# Logs & Debug Files
-logs/
+# Django logs
 *.log
 *.out
 *.err
 debug.log
+logs/
 
-# Django Migrations (ignore all except __init__.py)
-*/migrations/*
-!*/migrations/__init__.py
+# Django migrations except __init__.py
+**/migrations/
+!**/migrations/__init__.py
 
-# VS Code & IDE files
-.vscode/
-.idea/
-*.swp
-
-# Ignore static & media files (optional)
-staticfiles/
+# Media and collected static files
 media/
+staticfiles/
+static/
 
-# PostgreSQL-related files
+# =========================
+# 🌐 Angular / Node.js
+# =========================
+
+# Node dependencies and build output
+node_modules/
+dist/
+.angular/
+tmp/
+
+# Angular environment files
+/src/environments/environment*.ts
+
+# Angular logs and coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+testem.log
+libpeerconnection.log
+
+# Typings and cache
+typings/
+.sass-cache/
+.connect.lock
+
+# =========================
+# 🛠 IDEs and Editors
+# =========================
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains (WebStorm/PyCharm)
+.idea/
+
+# Other editors
+.project
+.classpath
+.settings/
+*.launch
+*.sublime-workspace
+.c9/
+*.swp
+.history/
+
+# =========================
+# 🐘 PostgreSQL / Dumps
+# =========================
+
 *.sql
 *.dump
 data.json
-pgdata/  # If using local PostgreSQL storage
+pgdata/
 
-# Ignore node_modules if using frontend with Django
-node_modules/
+# =========================
+# 🐳 Docker
+# =========================
 
-# Ignore dependencies (only if using pipenv)
-Pipfile
-Pipfile.lock
-
-# Ignore Docker-related files (if using Docker)
-docker-compose.yml
 .dockerignore
 __docker_cache__/
+docker-compose.override.yml
