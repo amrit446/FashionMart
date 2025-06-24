@@ -1,5 +1,12 @@
 # Client
 
+
+pip install -r requirements.txt
+
+pip3 freeze > requirements.txt insert to requirements.txt
+
+pip3 list we can see all packages
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.11.
 
 ## Development server
