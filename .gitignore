@@ -3,6 +3,12 @@
 # 🐍 Python / Django
 # =========================
 
+# at server folder
+
+# venv\Scripts\activate
+
+# then activate venv
+
 # Python bytecode and compiled files
 __pycache__/
 *.py[cod]
