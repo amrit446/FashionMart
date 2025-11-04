@@ -42,7 +42,7 @@ switch(true){
             .send({ error: "photo is Required and should be less then 1mb" });
 }
 
-   const products = new productModel({...req.fields,
+const products = new productModel({...req.fields,
  slug:slugify(name)
 })
  if(photo){
@@ -67,28 +67,48 @@ switch(true){
 
 
 //get all products
-export const getProductController= async(req,res)=>{
-   try{
-    const products = await productModel.find({})
-    .populate('category')
-    .select("-photo")
-    .limit(12).sort({createdAt:-1})
-    res.status(201).send({
-        success:true,
-        countTotal:products.length,
-        message:'AllProducts',
-        products,
-    })
-   }
-   catch(error){
-    console.log(error);
+export const getProductController = async (req, res) => {
+  try {
+    // Get page & limit from query params (defaults: page=1, limit=10)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+
+    // Calculate skip value
+    const skip = (page - 1) * limit;
+
+    // Fetch products with pagination
+    const products = await productModel
+      .find({})
+      .populate('category', 'name')
+      .select('-photo')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    // Get total count (for frontend pagination info)
+    const totalProducts = await productModel.countDocuments();
+
+    res.status(200).send({
+      success: true,
+      message: 'Products fetched successfully',
+      currentPage: page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+      count: products.length,
+      products,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).send({
-        success:false,
-        message:'Error in getting products',
-        error:error.message
-    })
-   } 
-}
+      success: false,
+      message: 'Error fetching paginated products',
+      error: error.message,
+    });
+  }
+};
+
+
 
 
 
