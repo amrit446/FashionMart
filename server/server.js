@@ -7,6 +7,8 @@ import categoryRoutes from './routes/categoryRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import bodyParser from 'body-parser';
 import cors from "cors";
+import { connectRedis } from "./config/redis.js";
+
 
 dotenv.config();
 
@@ -22,6 +24,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());
+
+await connectRedis();
+
 
 // API Routes
 app.use("/api/v1/auth", authRoutes);

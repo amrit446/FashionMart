@@ -6,6 +6,8 @@ import categoryModel from '../models/categoryModel.js'
 import braintree  from "braintree";
 import orderModel from '../models/orderModel.js';
 import dotenv from 'dotenv';
+import redisClient from "../config/redis.js";
+
 
 dotenv.config(); 
 //payment gateway
@@ -69,44 +71,59 @@ const products = new productModel({...req.fields,
 //get all products
 export const getProductController = async (req, res) => {
   try {
-    // Get page & limit from query params (defaults: page=1, limit=10)
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 4;
-
-    // Calculate skip value
     const skip = (page - 1) * limit;
 
-    // Fetch products with pagination
+    const cacheKey = `products:${page}:${limit}`;
+
+    // 1️⃣ Check cache
+    const cachedData = await redisClient.get(cacheKey);
+
+    if (cachedData) {
+      return res.status(200).send(JSON.parse(cachedData));
+    }
+
+    // 2️⃣ Fetch from DB
     const products = await productModel
       .find({})
-      .populate('category', 'name')
-      .select('-photo')
+      .populate("category", "name")
+      .select("-photo")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .lean();
 
-    // Get total count (for frontend pagination info)
     const totalProducts = await productModel.countDocuments();
 
-    res.status(200).send({
+    const response = {
       success: true,
-      message: 'Products fetched successfully',
+      message: "Products fetched successfully",
       currentPage: page,
       totalPages: Math.ceil(totalProducts / limit),
       totalProducts,
       count: products.length,
       products,
-    });
+    };
+
+    // 3️⃣ Store in Redis (TTL 10 min)
+    await redisClient.setEx(
+      cacheKey,
+      600,
+      JSON.stringify(response)
+    );
+
+    res.status(200).send(response);
   } catch (error) {
     console.error(error);
     res.status(500).send({
       success: false,
-      message: 'Error fetching paginated products',
+      message: "Error fetching products",
       error: error.message,
     });
   }
 };
+
 
 
 
